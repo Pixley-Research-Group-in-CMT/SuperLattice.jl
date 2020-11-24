@@ -1,4 +1,4 @@
-using KPMjulia.Util.Physics, KPMjulia.Util
+using SuperLattice.Util.Physics, SuperLattice.Util
 using Statistics
 αx, αy, αz, β, id = gammaMatrices(3; rep=:Dirac)
 

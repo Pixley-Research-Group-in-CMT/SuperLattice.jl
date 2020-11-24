@@ -1,9 +1,9 @@
 #https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.103.046811
 
 
-using KPMjulia, KPMjulia.Hamiltonians.Interface
+using SuperLattice, SuperLattice.Interface
 using LinearAlgebra, Arpack, SparseArrays
-using KPMjulia.Util.Physics
+using SuperLattice.Util.Physics
 
 
 uc = UnitCell(;d=2)
@@ -48,5 +48,5 @@ uc_symb = addUC(ltc, uc);
 
 populateUC(ltc, uc_symb);
 
-Interface.refresh_none(ltc)
+SuperLattice.refresh_none(ltc)
 Hsp_gen = get_operator_gen(ltc);

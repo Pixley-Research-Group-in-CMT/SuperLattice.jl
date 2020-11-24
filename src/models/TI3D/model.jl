@@ -1,6 +1,6 @@
-using KPMjulia, KPMjulia.Hamiltonians.Interface
+using SuperLattice
 using LinearAlgebra, Arpack, SparseArrays
-using KPMjulia.Util.Physics
+using SuperLattice.Util.Physics
 
 αx, αy, αz, β, id = gammaMatrices(3; rep=:Dirac)
 
@@ -26,10 +26,10 @@ uc_symb = addUC(ltc, uc);
 # add magnetic field
 # @time addMagneticField(ltc; B=[0,0,0.1])
 populateUC(ltc, uc_symb);
-Interface.refresh_none(ltc)
+SuperLattice.refresh_none(ltc)
 if isdefined(Main, :Hsp_gen)
     println("Hsp_gen defined, reusing")
-    Interface.pull_anonymous_funcs!(Hsp_gen, ltc)
+    SuperLattice.pull_anonymous_funcs!(Hsp_gen, ltc)
 else
     println("Hsp_gen not defined, creating new")
     Hsp_gen = get_operator_gen(ltc);

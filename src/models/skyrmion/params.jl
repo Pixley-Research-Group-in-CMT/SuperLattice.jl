@@ -1,4 +1,4 @@
-using KPMjulia.Util.Physics, KPMjulia.Util
+using SuperLattice.Util.Physics, SuperLattice.Util
 using Statistics
 
 # KPM

@@ -1,4 +1,4 @@
-using KPMjulia, KPMjulia.Hamiltonians.Interface
+using SuperLattice, SuperLattice
 using DelimitedFiles
 
 
@@ -53,8 +53,8 @@ for i in 1:Int64(tot_lines / steps)
   
     for (atom_a, atom_c) in Iterators.product(atom_symbs, atom_symbs)
         #truncation
-        xloc_a = Interface.get_xloc(uc, atom_a)
-        xloc_c = Interface.get_xloc(uc, atom_c) + Interface.get_xloc(ltc, uc_to)
+        xloc_a = SuperLattice.get_xloc(uc, atom_a)
+        xloc_c = SuperLattice.get_xloc(uc, atom_c) + SuperLattice.get_xloc(ltc, uc_to)
         if sqrt(sum((xloc_c-xloc_a).^2)) > truncate_trsd
             count[1] += 1
             continue
@@ -104,17 +104,17 @@ end
 # add magnetic field
 # addMagneticField(ltc; B=[0,0,0.1])
 #@time populateUC(ltc, uc_symb);
-Interface.refresh_none(ltc);
+SuperLattice.refresh_none(ltc);
 
 
 if isfile("Hgen.jld2")
-    Hsp_gen = Interface.loadSMG("Hgen.jld2", ltc)
+    Hsp_gen = SuperLattice.loadSMG("Hgen.jld2", ltc)
 else
     @time Hsp_gen = get_operator_gen(ltc);
-    Interface.nnz_compress!(Hsp_gen)
-    Interface.nt_compress!(Hsp_gen)
-    Interface.idx_compress!(Hsp_gen)
-    Interface.saveSMG(Hsp_gen, "Hgen.jld2")
+    SuperLattice.nnz_compress!(Hsp_gen)
+    SuperLattice.nt_compress!(Hsp_gen)
+    SuperLattice.idx_compress!(Hsp_gen)
+    SuperLattice.saveSMG(Hsp_gen, "Hgen.jld2")
     # temp workaround: explicitly pull functions back. 
-    Interface.pull_anonymous_funcs!(Hsp_gen, ltc)
+    SuperLattice.pull_anonymous_funcs!(Hsp_gen, ltc)
 end
