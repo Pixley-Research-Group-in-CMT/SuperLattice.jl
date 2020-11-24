@@ -1,6 +1,6 @@
-using KPMjulia, KPMjulia.Hamiltonians.Interface
+using SuperLattice
 using LinearAlgebra, Arpack, SparseArrays
-using KPMjulia.Util.Physics
+using SuperLattice.Util.Physics
 
 
 uc = UnitCell(;d=3)
@@ -20,11 +20,11 @@ addHopExt(uc, :a, :a, [0, 0, 1],
           0.5im * gamma * σ0 - 0.5 * t * σz; hc=true)
 
 # set up lattice
-ltc = ExplicitLattice(d=3,pv=[[1.,0,0],[0.,1,0],[0.,0,1]],sizes=sizes,OBC=OBC);
+ltc = Lattice(d=3,pv=[[1.,0,0],[0.,1,0],[0.,0,1]],sizes=sizes,OBC=OBC);
 uc_symb = addUC(ltc, uc);
 # add magnetic field
 # @time addMagneticField(ltc; B=[0,0,0.1])
 
 populateUC(ltc, uc_symb);
-Interface.refresh_none(ltc)
+SuperLattice.refresh_none(ltc)
 Hsp_gen = get_operator_gen(ltc);

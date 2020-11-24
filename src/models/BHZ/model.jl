@@ -26,7 +26,7 @@ pv = [
       [0.,1]
      ]
 
-ltc = ExplicitLattice(d=2,pv=pv,sizes=sizes,OBC=OBC,z_skip=false);
+ltc = Lattice(d=2,pv=pv,sizes=sizes,OBC=OBC,z_skip=false);
 uc_symb = addUC(ltc, uc);
 # add magnetic field
 # @time addMagneticField(ltc; B=[0,0,0.1])

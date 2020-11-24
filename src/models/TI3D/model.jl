@@ -21,7 +21,7 @@ addHopExt(uc, :a, :a, [0, 0, 1],
           0.5im * t * αz - 0.5 * m2 * β; hc=true)
 
 # set up lattice
-ltc = ExplicitLattice(d=3,pv=[[1.,0,0],[0.,1,0],[0.,0,1]],sizes=sizes,OBC=OBC);
+ltc = Lattice(d=3,pv=[[1.,0,0],[0.,1,0],[0.,0,1]],sizes=sizes,OBC=OBC);
 uc_symb = addUC(ltc, uc);
 # add magnetic field
 # @time addMagneticField(ltc; B=[0,0,0.1])

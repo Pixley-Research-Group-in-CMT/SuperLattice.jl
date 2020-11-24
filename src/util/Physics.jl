@@ -1,3 +1,5 @@
+# Utility functions under SuperLattice.Util.Physics
+
 module Physics
 export sigmaMatrices, sigmaMatricesDot, fermiFunction, fermiFunctions
 export gammaMatrices

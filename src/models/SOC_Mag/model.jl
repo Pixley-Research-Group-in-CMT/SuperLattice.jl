@@ -22,7 +22,7 @@ addHopExt(uc, :a, :a, [0, 0, 1],
           0.5im * t * σz; hc=true)
 
 # set up lattice
-ltc = ExplicitLattice(d=3,
+ltc = Lattice(d=3,
                       pv=[[1., 0, 0],
                           [0., 1, 0],
                           [0., 0, 1]],

@@ -265,3 +265,7 @@ function spy(ltc::Lattice)
 end
 
 
+
+### TODO where to put this?
+I2ijk(I::Int64, ltc::Lattice) = I2ijk(I, ltc.sizes, ltc.d; z_skip=ltc.z_skip)
+ijk2I(ijk::Array{T,1}where{T<:Int64}, ltc::Lattice) = ijk2I(ijk, ltc.sizes, ltc.d; z_skip=ltc.z_skip)

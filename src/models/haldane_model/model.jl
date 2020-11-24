@@ -44,7 +44,7 @@ primitive_vectors = [
                      [1.5, sqrt(3)/2],
                      [0, sqrt(3)]
                     ]
-ltc = ExplicitLattice(d=2,
+ltc = Lattice(d=2,
                       pv=primitive_vectors,
                       sizes=sizes,
                       OBC=OBC,

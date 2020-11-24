@@ -32,7 +32,7 @@ t = A[:,6] + 1im * A[:,7]
 ## BUILD UNITCELL
 Z = 31+15
 uc = UnitCell(; d=3)
-ltc = ExplicitLattice(d=3,pv=pv,sizes=[L,L,Z],OBC=false,z_skip=true);
+ltc = Lattice(d=3,pv=pv,sizes=[L,L,Z],OBC=false,z_skip=true);
 for (i, a_symb) in enumerate(atom_symbs)
     xloc = sum(atom_ilocs[i].*pv)
     addAtom(uc, a_symb, atom_dof[i], xloc)
