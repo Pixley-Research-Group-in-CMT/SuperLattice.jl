@@ -1,5 +1,10 @@
 module SuperLattice
 
-# Write your package code here.
+include("util/general.jl")
+include("util/physics.jl")
+include("util/functions.jl")
 
-end
+include("construct/unitcell.jl")
+include("construct/lattice.jl")
+
+end # module

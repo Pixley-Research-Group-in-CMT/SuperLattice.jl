@@ -3,6 +3,9 @@ uuid = "cfaeb0a2-ec06-458d-9f5f-e8dd09141425"
 authors = ["Yixing Fu"]
 version = "0.1.0"
 
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
 [compat]
 julia = "1.5"
 
