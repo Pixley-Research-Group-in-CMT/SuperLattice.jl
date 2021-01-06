@@ -12,11 +12,11 @@ Vr = function(x, y, v)
 end
 addPot(uc, :a, Vr)
 # hopping term (only external)
-addHopExt(uc, :a, :a, [1, 0, 0], 
+addHop(uc, :a, :a, [1, 0, 0], 
           -0.5im * t * σx - 0.5 * t * σz ; hc=true)
-addHopExt(uc, :a, :a, [0, 1, 0], 
+addHop(uc, :a, :a, [0, 1, 0], 
           -0.5im * t * σy - 0.5 * t * σz; hc=true)
-addHopExt(uc, :a, :a, [0, 0, 1], 
+addHop(uc, :a, :a, [0, 0, 1], 
           0.5im * gamma * σ0 - 0.5 * t * σz; hc=true)
 
 # set up lattice
