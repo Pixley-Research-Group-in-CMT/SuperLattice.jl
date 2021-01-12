@@ -29,6 +29,14 @@ function Atom{Ts}(dof::Integer, xloc::Array) where {Ts}
     Atom{Ts}(Symbol(xloc), Int64(dof), xloc)
 end
 
+get_xloc(atom::Atom) = atom.xloc
+function get_xloc!(atom::Atom, xloc)
+    xloc .= atom.xloc
+end
+function add_xloc!(atom::Atom, xloc)
+    xloc .+= atom.xloc
+end
+
 
 ## Print functions
 function Base.show(atom::Atom)

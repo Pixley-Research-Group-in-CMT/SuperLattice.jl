@@ -242,6 +242,7 @@ end
 # aliases
 addHopInt(uc, atomSymb_a, atomSymb_c, t0; kwargs...) = addTerm(uc, atomSymb_a, atomSymb_c, zeros(Int64, uc.d), t0; kwargs...)
 addHopExt(args...; kwargs...) = addTerm(args...; kwargs...)
+addHop(args...; kwargs...) = addTerm(args...; kwargs...)
 
 
 
