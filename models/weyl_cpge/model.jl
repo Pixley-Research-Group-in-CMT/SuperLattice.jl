@@ -3,6 +3,7 @@ using LinearAlgebra, Arpack, SparseArrays
 using SuperLattice.Util.Physics
 
 
+println("define model")
 uc = UnitCell(;d=3)
 addAtom(uc, :a, 2, [0,0,0]) # 2 band model
 

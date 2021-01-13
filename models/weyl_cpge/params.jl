@@ -1,4 +1,4 @@
-using KPMjulia.Util.Physics, KPMjulia.Util
+using SuperLattice.Util.Physics, SuperLattice.Util
 using Statistics
 αx, αy, αz, β, id = gammaMatrices(3; rep=:Dirac)
 
@@ -10,7 +10,7 @@ L=30
 sizes=[L,L,L]
 W=0.0
 ######## random function
-rf = rand_gen(prod(sizes); rank=r, rf=randn, offset=true) # random gaussian disorder that offset to 0
+rf = SuperLattice.Util.rand_gen(prod(sizes); rf=randn, offset=true) # random gaussian disorder that offset to 0
 ########
 
 
@@ -18,10 +18,7 @@ OBC=false
 #tbc_theta = [0.5, 0.5, 0.5] # in unit of 2pi
 # if not set, random twisted boundary condition set here.
 tbc_theta = rand(3)
-for p in 1:(r*2+1)
-    sleep(2)
-    tbc_theta .= rand(3)
-end
+println("theta=$(tbc_theta)")
 
 
 
