@@ -16,6 +16,12 @@ struct Lattice{Ts}
     function Lattice{Ts}(;d::Integer=2,sizes::Array{T,1} where {T<:Integer}=ones(Int64,2), OBC::Union{Array{Bool,1},Bool}=false,pv::Array{Array{Ts,1}}=[[0.,1.],[1.,0.]],z_skip=false) where Ts
         d = Int64(d)
         sizes = Int64.(sizes)
+        if OBC != false
+            println("Using OBC is temporarily deprecated.")
+        end
+        if z_skip
+            println("Using `z_skip` is deprecated.")
+        end
         if length(OBC)==1
             OBC = ones(Bool, d) * OBC
         end
