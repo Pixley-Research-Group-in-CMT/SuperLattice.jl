@@ -1,5 +1,5 @@
 # utility functions exposed to user under SuperLattice.Util
-using Random
+using Random, Arpack
 export rand_gen, normalizeH
 
 """
@@ -36,10 +36,9 @@ end
 """
 Normalize H. If requested, allow renormalizing it to fixed value.
 """
-function normalizeH(H::SparseMatrixCSC{ComplexF64,Int64}; eps::Float64=0.1, setA::Float64=0.0)
+function normalizeH(H; eps::Float64=0.1, setA::Float64=0.0)
     
-    println("hermitian check: ")
-    @assert abs(sum(H-H')) < 1e-16*sqrt(H.n)
+    @assert all(x -> x≈0, H-H') "hermitian check failed. "
     println("pass.")
 
 	if setA==0

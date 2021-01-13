@@ -1,5 +1,5 @@
 # unit_cell+lattice -> matrix of Hamiltonian and Current operators
-using Util.Physics
+using .Util.Physics
 using SparseArrays, LinearAlgebra
 export get_operator_gen, get_hamiltonian, get_current_op, get_operator
 
