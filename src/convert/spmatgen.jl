@@ -112,7 +112,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
             rj = @view spmatgen.Jr[((n-1)*d+1):(n*d)]
             vv = @view V_blocked[f_i, :, :, n]
 
-            f_table[spmatgen.f[n]](ri, rj, vv)
+            Base.invokelatest(f_table[spmatgen.f[n]], ri, rj, vv)
 
         end
     end
