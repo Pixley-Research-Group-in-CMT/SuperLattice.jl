@@ -38,8 +38,8 @@ Normalize H. If requested, allow renormalizing it to fixed value.
 """
 function normalizeH(H; eps::Float64=0.1, setA::Float64=0.0)
     
-    @assert all(x -> x≈0, H-H') "hermitian check failed. "
-    println("pass.")
+    #@assert all(x -> x≈0, H-H') "hermitian check failed. "
+    #println("pass.")
 
 	if setA==0
     es, vs = eigs(H;tol=0.001,maxiter=300)
