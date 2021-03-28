@@ -69,11 +69,15 @@ tbc_theta is the twist angle, range [0, 2pi]
 """
 function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv}; 
                           Ops::Array{Symbol, 1}=Symbol[:H],
-                          da::Array{Float64, 1}=[1.0,0,0],
-                          db::Array{Float64, 1}=[0.0,1,0],
-                          tbc_theta::Array{Float64, 1}=[0.0,0.0,0.0],
+                          da::Array{T, 1} where T<:Real =[1.0,0,0],
+                          db::Array{T, 1} where T<:Real =[0.0,1,0],
+                          tbc_theta::Array{T, 1} where T<:Real=[0.0,0.0,0.0],
                           save_ascii::String=""
                          ) where {Ts, Tv}
+
+    da = Ts.(da)
+    db = Ts.(db)
+    tbc_theta = Ts.(tbc_theta)
 
     rets = Array{SparseMatrixCSC, 1}(undef, length(Ops))
     Ops_ri = findall(x->startswith(String(x), "R"),Ops)
@@ -149,12 +153,16 @@ end
 
 
 function set_f_table(
-                     spmatgen::SparseMatrixGen; 
+                     spmatgen::SparseMatrixGen{Ts, Tv}; 
                      Ops::Array{Symbol, 1}=Symbol[:H],
-                     da::Array{Float64, 1}=[1.0,0,0],
-                     db::Array{Float64, 1}=[0.0,1,0],
-                     tbc_theta::Array{Float64, 1}=[0.0,0.0,0.0]
-                    )
+                     da::Array{T, 1} where T<:Number=[1.0,0,0],
+                     db::Array{T, 1} where T<:Number=[0.0,1,0],
+                     tbc_theta::Array{T, 1} where T<:Number=[0.0,0.0,0.0]
+                    ) where {Ts, Tv}
+    da = Ts.(da)
+    db = Ts.(db)
+    tbc_theta = Ts.(tbc_theta)
+
     f_mults = map(op -> f_gen_operator(op; d=spmatgen.d, da=da, db=db), Ops)
     f_tables = map(f_mult -> apply_c_mult(spmatgen.f_table, f_mult), f_mults)
     if !all(x->x==0, tbc_theta)
@@ -285,7 +293,7 @@ function to_spatial_filter_vector(
     d = spmatgen.d
 
     try 
-        tmp = constr_f(zeros(ComplexF64, d))
+        tmp = constr_f(zeros(Tv, d))
         typeof(tmp) <: Number
     catch
         throw(ArgumentError("`constr_f` should take array of $(d) and output a number."))
