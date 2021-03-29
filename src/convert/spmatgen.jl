@@ -126,7 +126,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                                   imag(transpose(reshape(V_blocked, dof_per_term^2, :)))
                                  ))
     end
-    println("final")
+    println("final step timing:")
     @time    rets[Ops_i] = map(f_i->sparse(I, J, V[f_i, :]), 1:length(Ops))
     dropzeros!.(rets)
     return rets
