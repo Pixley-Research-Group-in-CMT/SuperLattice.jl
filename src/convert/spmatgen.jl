@@ -105,7 +105,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
     dof_per_term = Int64(round(sqrt(spmatgen.nnz_per_term[1])))
     #V_single_term = Array{Tv, 2}(undef, dof_per_term, dof_per_term)
     #V_single_term_vec_view = @view V_single_term[:] 
-    @time V_blocked = reshape(V, length(Ops), dof_per_term, dof_per_term, spmatgen.NT[1])
+    V_blocked = reshape(V, length(Ops), dof_per_term, dof_per_term, spmatgen.NT[1])
     
 
     d = spmatgen.d
@@ -130,7 +130,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                                   imag(transpose(reshape(V_blocked, dof_per_term^2, :)))
                                  ))
     end
-    println("final")
+    println("final step timing:")
     @time    rets[Ops_i] = map(f_i->sparse(I, J, V[f_i, :]), 1:length(Ops))
     dropzeros!.(rets)
     return rets

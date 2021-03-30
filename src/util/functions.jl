@@ -1,3 +1,4 @@
+using Logging
 ###
 #  Peierls substitution
 function gen_peierls(B::Array{T, 1} where {T<:Real}, d::Integer)
@@ -59,8 +60,8 @@ function gen_tbc(
     @assert (!any(isinf, vcat(pv...))) "some pv is inf. "
     pv_mat = hcat(pv...)
     pv_mat_inv = inv(pv_mat)
-    println("pvmatinv:$pv_mat_inv")
-    println("pvmat:$pv_mat")
+    @debug "pvmatinv:$(pv_mat_inv)"
+    @debug "pvmat:$(pv_mat)"
     θ = theta ./ L
     println("theta / L $(θ)")
 
