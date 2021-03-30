@@ -72,7 +72,12 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                           da::Array{T, 1} where T<:Real =[1.0,0,0],
                           db::Array{T, 1} where T<:Real =[0.0,1,0],
                           tbc_theta::Array{T, 1} where T<:Real=[0.0,0.0,0.0],
-                          save_ascii::String=""
+                          save_ascii::String="", 
+                          # work space arrays
+                          sparse_klasttouch::Vector{Int64}=Vector{Int64}(),
+                          sparse_csrrowptr::Vector{Int64}=Vector{Int64}(),
+                          sparse_csrcolval::Vector{Int64}=Vector{Int64}(),
+                          sparse_csrnzval::Vector{Tv}=Vector{Tv}(),
                          ) where {Ts, Tv}
 
     da = Ts.(da)
@@ -130,8 +135,23 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                                   imag(transpose(reshape(V_blocked, dof_per_term^2, :)))
                                  ))
     end
+
+    ops_tot_dof = spmatgen.dof_compressed[1]
+    coo_len = length(I)
+    resize!(sparse_klasttouch, ops_tot_dof)
+    resize!(sparse_csrrowptr, ops_tot_dof + 1)
+    resize!(sparse_csrcolval, coo_len)
+    resize!(sparse_csrnzval, coo_len)
+
     println("final step timing:")
-    @time    rets[Ops_i] = map(f_i->sparse(I, J, V[f_i, :]), 1:length(Ops))
+    @time for (f_i, ops_i) in enumerate(Ops_i)
+        V_fi = @view V[f_i, :]
+        rets[ops_i] = SparseArrays.sparse!(
+                                           I, J, V_fi, 
+                                           ops_tot_dof, ops_tot_dof, +, sparse_klasttouch,
+                                           sparse_csrrowptr, sparse_csrcolval, sparse_csrnzval,
+                                          )
+    end
     dropzeros!.(rets)
     return rets
 end
