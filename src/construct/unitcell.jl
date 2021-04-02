@@ -2,7 +2,7 @@
 #
 # This section is not computational expensive, and
 # should keep correctness and easiness of use at priority.
-using LinearAlgebra
+using LinearAlgebra, Logging
 export UnitCell, addAtom, addPot, addHop, addHopInt, addHopExt
 
 include("atom.jl")
@@ -81,7 +81,9 @@ function addAtom(uc::UnitCell{Ts, Tv}, atomSymb::Symbol, dof::Int64, xloc) where
     @assert (!(atomSymb in keys(uc.atoms))) "naming conflict"
 
     for v in values(uc.atoms)
-        @assert (v.xloc != xloc) "existing atom at this loc"
+        if v.xloc == xloc
+            @warn "existing atom at this loc"
+        end
     end
 
     atom = Atom{Ts}(atomSymb, dof, xloc; dof_cum_prev=get_dof(uc))
