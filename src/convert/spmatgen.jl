@@ -78,6 +78,9 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                           sparse_csrrowptr::Vector{Int64}=Vector{Int64}(),
                           sparse_csrcolval::Vector{Int64}=Vector{Int64}(),
                           sparse_csrnzval::Vector{Tv}=Vector{Tv}(),
+                          sparse_csccolptr::Vector{Int64}=Vector{Int64}(),
+                          sparse_cscrowval::Vector{Int64}=Vector{Int64}(),
+                          sparse_cscnzval::Vector{Tv}=Vector{Tv}()
                          ) where {Ts, Tv}
 
     da = Ts.(da)
@@ -139,7 +142,10 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
     ops_tot_dof = spmatgen.dof_compressed[1]
     coo_len = length(I)
     resize!(sparse_klasttouch, ops_tot_dof)
+
     resize!(sparse_csrrowptr, ops_tot_dof + 1)
+    resize!(sparse_csccolptr, ops_tot_dof + 1)
+
     resize!(sparse_csrcolval, coo_len)
     resize!(sparse_csrnzval, coo_len)
 
@@ -150,6 +156,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                                            I, J, V_fi, 
                                            ops_tot_dof, ops_tot_dof, +, sparse_klasttouch,
                                            sparse_csrrowptr, sparse_csrcolval, sparse_csrnzval,
+                                           sparse_csccolptr, sparse_cscrowval, sparse_cscnzval,
                                           )
     end
     dropzeros!.(rets)
