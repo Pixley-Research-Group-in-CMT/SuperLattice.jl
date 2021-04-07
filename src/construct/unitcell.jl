@@ -178,9 +178,10 @@ function addTerm(
             end
             println("prefix reset as $(prefix)")
             ispot = true
-            if hc
-                @assert check_hc(uc, t0, get_dof(uc, atomSymb_a)) "potential term $(atomSymb_a) is not Hermitian as expected"
-            end
+            
+            #if hc
+            #    @assert check_hc(uc, t0, get_dof(uc, atomSymb_a)) "potential term $(atomSymb_a) is not Hermitian as expected"
+            #end
         else
             println("term $(atomSymb_a) -> $(atomSymb_c) at $(uc_c) is hopping in same U.C.")
             if prefix == "he"
