@@ -57,7 +57,7 @@ function get_operator_gen(ltc::Lattice;
         idx_compress!(spmatgen)
     end
     if j_to_nnz_table
-        set_j_to_nnz_table(spmatgen)
+        set_j_to_nnz_table!(spmatgen)
     end
     return spmatgen
     #    return sparse(I[1:counter[1]-1], J[1:counter[1]-1], V[1:counter[1]-1])
