@@ -131,7 +131,8 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                                  ))
     end
     #println("final step timing:")
-    #@time    rets[Ops_i] = map(f_i->sparse(I, J, V[f_i, :]), 1:length(Ops))
+    #@time
+    rets[Ops_i] = map(f_i->sparse(I, J, V[f_i, :]), 1:length(Ops))
     dropzeros!.(rets)
     return rets
 end
