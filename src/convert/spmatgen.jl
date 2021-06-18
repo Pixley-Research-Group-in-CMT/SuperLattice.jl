@@ -317,9 +317,13 @@ end
 # TODO doc
 function to_sparse_matrix_position(spmatgen::SparseMatrixGen{Ts, Tv}; 
                                    Ops::Array{Symbol, 1}=Symbol[:Rx],
-                                   da::Array{Float64, 1}=[1.0,0,0],
-                                   db::Array{Float64, 1}=[0.0,1,0]
+                                   da::Array=[1.0,0,0],
+                                   db::Array=[0.0,1,0]
                                   ) where {Ts, Tv}
+
+    da = Ts.(da)
+    db = Ts.(db)
+
     @assert allsame(@view spmatgen.nnz_per_term[1:spmatgen.NT[1]]) "this function deals with all term with uniform square size"
     nnz_per_term = spmatgen.nnz_per_term[1]
     if length(spmatgen.j_to_nnz_table)==1
@@ -351,9 +355,13 @@ end
 # TODO check if this is better than `to_sparse_matrix_position`.
 function to_sparse_matrix_position2(spmatgen::SparseMatrixGen{Ts, Tv}; 
                                     Ops::Array{Symbol, 1}=Symbol[:Rx],
-                                    da::Array{Float64, 1}=[1.0,0,0],
-                                    db::Array{Float64, 1}=[0.0,1,0]
+                                    da::Array=[1.0,0,0],
+                                    db::Array=[0.0,1,0]
                                    ) where {Ts, Tv}
+
+    da = Ts.(da)
+    db = Ts.(db)
+
     @assert allsame(@view spmatgen.nnz_per_term[1:spmatgen.NT[1]]) "this function deals with all term with uniform square size"
     d = spmatgen.d
     rets = Array{SparseMatrixCSC, 1}(undef, length(Ops))
@@ -383,8 +391,8 @@ Interpret the direction.
 """
 function parse_dir(Op::Symbol;
                    d::Int64=3, 
-                   da::Array{Float64, 1}=[1.0,0,0],
-                   db::Array{Float64, 1}=[0.0,1,0]
+                   da::Array=[1.0,0,0],
+                   db::Array=[0.0,1,0]
                   )
 
     dir_str = String(Op)[end:end]

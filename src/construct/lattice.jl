@@ -218,7 +218,11 @@ Should not be explicitly invoked.
 This function creates in ltc a unitcell for `:none`.
 """
 function refresh_none(ltc)
-    new_none = UnitCell(;d=ltc.d)
+
+    Ts = get_Ts(ltc)
+    Tv = get_Tv(ltc)
+
+    new_none = UnitCell{Ts, Tv}(;d=ltc.d)
     for (uc_symb, uc) in ltc.uc_table
         if uc_symb == :none
             continue
@@ -277,4 +281,4 @@ I2ijk(I::Int64, ltc::Lattice) = I2ijk(I, ltc.sizes, ltc.d; z_skip=ltc.z_skip)
 ijk2I(ijk::Array{T,1}where{T<:Int64}, ltc::Lattice) = ijk2I(ijk, ltc.sizes, ltc.d; z_skip=ltc.z_skip)
 
 get_Ts(ltc::Lattice{Ts}) where Ts = Ts
-get_Tv(ltc::Lattice) = get_Tv(first(values(ltc.uc_map)))
+get_Tv(ltc::Lattice) = get_Tv(first(values(ltc.uc_table)))
