@@ -11,11 +11,14 @@ export get_operator_gen, get_hamiltonian, get_current_op, get_operator
 # f_add: xloc_ann, xloc_cre -> y, and this y is *added* to the term between ann and cre
 # f_comp: x -> y, hence this f is composed, i.e. it acts upon the value of the term.
 function get_operator_gen(ltc::Lattice; 
-                          nnz_compress=false, 
-                          nt_compress=false,
-                          idx_compress=false,
-                          j_to_nnz_table=false
+                          nnz_compress=true, 
+                          nt_compress=true,
+                          idx_compress=true,
+                          j_to_nnz_table=true,
                          )
+
+    # prepare
+    refresh_none(ltc)
 
     #    nnz, uc_nnz = est_nnz(ltc)
     NNZ_est = est_nnz(ltc)
@@ -54,7 +57,7 @@ function get_operator_gen(ltc::Lattice;
         idx_compress!(spmatgen)
     end
     if j_to_nnz_table
-        set_j_to_nnz_table(spmatgen)
+        set_j_to_nnz_table!(spmatgen)
     end
     return spmatgen
     #    return sparse(I[1:counter[1]-1], J[1:counter[1]-1], V[1:counter[1]-1])

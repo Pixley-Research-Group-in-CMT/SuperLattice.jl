@@ -2,7 +2,7 @@
 #
 # This section is not computational expensive, and
 # should keep correctness and easiness of use at priority.
-using LinearAlgebra
+using LinearAlgebra, Logging
 export UnitCell, addAtom, addPot, addHop, addHopInt, addHopExt
 
 include("atom.jl")
@@ -81,7 +81,9 @@ function addAtom(uc::UnitCell{Ts, Tv}, atomSymb::Symbol, dof::Int64, xloc) where
     @assert (!(atomSymb in keys(uc.atoms))) "naming conflict"
 
     for v in values(uc.atoms)
-        @assert (v.xloc != xloc) "existing atom at this loc"
+        if v.xloc == xloc
+            @warn "existing atom at this loc"
+        end
     end
 
     atom = Atom{Ts}(atomSymb, dof, xloc; dof_cum_prev=get_dof(uc))
@@ -176,9 +178,10 @@ function addTerm(
             end
             println("prefix reset as $(prefix)")
             ispot = true
-            if hc
-                @assert check_hc(uc, t0, get_dof(uc, atomSymb_a)) "potential term $(atomSymb_a) is not Hermitian as expected"
-            end
+            
+            #if hc
+            #    @assert check_hc(uc, t0, get_dof(uc, atomSymb_a)) "potential term $(atomSymb_a) is not Hermitian as expected"
+            #end
         else
             println("term $(atomSymb_a) -> $(atomSymb_c) at $(uc_c) is hopping in same U.C.")
             if prefix == "he"
