@@ -130,7 +130,7 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
 
     for (f_i, f_table) in enumerate(f_tables)
         println("f_i=$(f_i)")
-        @time @sync Threads.@threads for n in 1:spmatgen.NT[1]
+        @time @sync for n in 1:spmatgen.NT[1]
             ri = @view spmatgen.Ir[((n-1)*d+1):(n*d)]
             rj = @view spmatgen.Jr[((n-1)*d+1):(n*d)]
             vv = @view V_blocked[:, :, n]
