@@ -73,14 +73,6 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
                           db::Array{T, 1} where T<:Real =[0.0,1,0],
                           tbc_theta::Array{T, 1} where T<:Real=[0.0,0.0,0.0],
                           save_ascii::String="", 
-                          # work space arrays
-                          sparse_klasttouch::Vector{Int64}=Vector{Int64}(),
-                          sparse_csrrowptr::Vector{Int64}=Vector{Int64}(),
-                          sparse_csrcolval::Vector{Int64}=Vector{Int64}(),
-                          sparse_csrnzval::Vector{Tv}=Vector{Tv}(),
-                          sparse_csccolptr::Vector{Int64}=Vector{Int64}(),
-                          sparse_cscrowval::Vector{Int64}=Vector{Int64}(),
-                          sparse_cscnzval::Vector{Tv}=Vector{Tv}()
                          ) where {Ts, Tv}
 
     da = Ts.(da)
@@ -118,19 +110,11 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
     
 
     d = spmatgen.d
-    ops_tot_dof = spmatgen.dof_compressed[1]
-    coo_len = length(I)
-    resize!(sparse_klasttouch, ops_tot_dof)
-
-    resize!(sparse_csrrowptr, ops_tot_dof + 1)
-    resize!(sparse_csccolptr, ops_tot_dof + 1)
-
-    resize!(sparse_csrcolval, coo_len)
-    resize!(sparse_csrnzval, coo_len)
 
     for (f_i, f_table) in enumerate(f_tables)
         println("f_i=$(f_i)")
-        @time @sync for n in 1:spmatgen.NT[1]
+        @time @sync Threads.@threads for n in 1:spmatgen.NT[1]
+            @debug "$n at thread $(Threads.threadid())"
             ri = @view spmatgen.Ir[((n-1)*d+1):(n*d)]
             rj = @view spmatgen.Jr[((n-1)*d+1):(n*d)]
             vv = @view V_blocked[:, :, n]
@@ -151,12 +135,9 @@ function to_sparse_matrix(spmatgen::SparseMatrixGen{Ts, Tv};
         end
 
         println("final step timing:")
-        @time rets[f_i] = SparseArrays.sparse!(
-                                         I, J, V, 
-                                         ops_tot_dof, ops_tot_dof, +, sparse_klasttouch,
-                                         sparse_csrrowptr, sparse_csrcolval, sparse_csrnzval,
-                                         sparse_csccolptr, sparse_cscrowval, sparse_cscnzval, # V is no longer needed afterthis, so reused as output
-                                        )
+        @time rets[f_i] = sparse(
+                                 I, J, V, 
+                                )
         dropzeros!(rets[f_i])
     end
     return rets
