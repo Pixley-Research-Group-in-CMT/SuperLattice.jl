@@ -312,21 +312,24 @@ end
 function check_hc(uc::UnitCell, f::Function, dof::Int64; test_N::Int64=10)
     nargs = nargs_f(f)
     @assert (2<=nargs<=3) "function should either be f(x,y) -> v or f!(x, y, v)"
-    x = zeros(Float64, uc.d)
-    y = zeros(Float64, uc.d)
-    v = zeros(Float64, dof, dof)
+
+    Ts = get_Ts(uc)
+
+    x = zeros(Ts, uc.d)
+    y = zeros(Ts, uc.d)
+    v = zeros(Ts, dof, dof)
     if (nargs == 2)
         for i = 1:test_N
-            x .= rand(Float64, uc.d)
-            y .= rand(Float64, uc.d)
+            x .= rand(Ts, uc.d)
+            y .= rand(Ts, uc.d)
             if !(ishermitian(f(x, y)))
                 return false
             end
         end
     else
         for i = 1:test_N
-            x .= rand(Float64, uc.d)
-            y .= rand(Float64, uc.d)
+            x .= rand(Ts, uc.d)
+            y .= rand(Ts, uc.d)
             f(x, y, v)
             if !ishermitian(v)
                 return false
@@ -335,3 +338,8 @@ function check_hc(uc::UnitCell, f::Function, dof::Int64; test_N::Int64=10)
     end
     return true
 end
+
+
+get_Ts(uc::UnitCell{Ts, Tv}) where {Ts, Tv} = Ts
+
+get_Tv(uc::UnitCell{Ts, Tv}) where {Ts, Tv} = Tv

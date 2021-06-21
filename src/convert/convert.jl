@@ -20,6 +20,9 @@ function get_operator_gen(ltc::Lattice;
     # prepare
     refresh_none(ltc)
 
+    Ts = get_Ts(ltc)
+    Tv = get_Tv(ltc)
+
     #    nnz, uc_nnz = est_nnz(ltc)
     NNZ_est = est_nnz(ltc)
     NT_est = get_term_count(ltc)
@@ -29,7 +32,7 @@ function get_operator_gen(ltc::Lattice;
     @assert all(y->y==dof_per_uc, dof_per_uc_all) "Require all uc to have identical dof for now, but getting $(dof_per_uc_all)."
 
 
-    spmatgen = SparseMatrixGen{Float64, ComplexF64}(d=ltc.d, sizes=ltc.sizes, pv=ltc.pv, dof_tot=dof_tot, dof_per_uc=dof_per_uc, NT_est=NT_est, NNZ_est=NNZ_est)
+    spmatgen = SparseMatrixGen{Ts, Tv}(d=ltc.d, sizes=ltc.sizes, pv=ltc.pv, dof_tot=dof_tot, dof_per_uc=dof_per_uc, NT_est=NT_est, NNZ_est=NNZ_est)
     collect_f_table!(ltc, spmatgen.f_table)
 
 
@@ -167,10 +170,10 @@ function get_operator(ltc; kwargs...)
     return All_ops
 end
 
-f_gen_operator(op_name::Symbol; d::Integer=3, da::Array{Float64,1}=[1.0,0,0], db::Array{Float64,1}=[0,1.0,0]) = f_gen_operator(op_name, d; da=da, db=db)
+f_gen_operator(op_name::Symbol; d::Integer=3, da::Array=[1.0,0,0], db::Array=[0,1.0,0]) = f_gen_operator(op_name, d; da=da, db=db)
 function f_gen_operator(op_name::Symbol, d::Integer; 
-                        da::Array{Float64, 1}=[1.0,0,0],
-                        db::Array{Float64, 1}=[0.0,1,0]
+                        da::Array=[1.0,0,0],
+                        db::Array=[0.0,1,0]
                        )
     if op_name == :H
         return (r1, r2) -> 1.0
@@ -186,12 +189,12 @@ end
 # dispatch the function to generate the function multiplied on each term 
 # for defining current operator
 f_gen_current_operator(dir::Symbol; d::Integer=3,
-                       da::Array{Float64, 1}=[1.0,0,0],
-                       db::Array{Float64, 1}=[0.0,1,0]
+                       da::Array=[1.0,0,0],
+                       db::Array=[0.0,1,0]
                       ) = f_gen_current_operator(dir, d;da=da, db=db)
 function f_gen_current_operator(dir::Symbol, d::Integer; 
-                                da::Array{Float64, 1}=[1.0,0,0],
-                                db::Array{Float64, 1}=[0.0,1,0]
+                                da::Array=[1.0,0,0],
+                                db::Array=[0.0,1,0]
                                )
     if dir==:x || dir==:X
         dir_vec = zeros(Float64, d)
