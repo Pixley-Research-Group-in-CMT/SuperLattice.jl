@@ -6,7 +6,7 @@ export rand_gen, normalizeH
 returns a function that output an element of an array of N pre-generated random numbers.
 Allow offsetting the average of the N numbers to 0
 """
-function rand_gen(N::Integer; rank::Integer=0, rf::Function=randn, offset::Bool=false, rng=nothing)
+function rand_gen(N::Integer; rank::Integer=0, rf::Function=randn, offset::Bool=false, rng=nothing, Tv=Float64)
     if !offset 
         println("WARNING: untested.  Please use native random functions for now. ")
     end
@@ -14,9 +14,9 @@ function rand_gen(N::Integer; rank::Integer=0, rf::Function=randn, offset::Bool=
         rng = Random.GLOBAL_RNG
     end
 
-    rn_all = rf(rng, N)
+    rn_all = rf(rng, Tv, N)
     for p in 1:rank # when paralellized, replicate rank
-        rn_all .= rf(rng, N)
+        rn_all .= rf(rng, Tv, N)
     end
 
     if offset
