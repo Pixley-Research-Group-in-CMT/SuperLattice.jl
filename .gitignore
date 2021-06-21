@@ -4,3 +4,4 @@
 /docs/build/
 temp_test
 *.dat
+Manifest.toml
